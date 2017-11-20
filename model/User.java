@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by William Yu on 9/11/2017.
  */
-public class User extends Person implements Serializable {
+public class User extends Person implements Serializable{
 
     public String username;
     public String email;
@@ -29,6 +29,7 @@ public class User extends Person implements Serializable {
         this.password = password;
         this.profilePhoto = profilePhoto;
     }
+
 
     public User(String firstName, String lastName, int SSN, String dob, char gender, String username, String email, String phoneNumber, String password, String profilePhoto) {
         super(firstName, lastName, SSN, dob, gender);
@@ -81,5 +82,12 @@ public class User extends Person implements Serializable {
 
     public String toString(){
         return super.toString() + " " + username + " " + email + " " + phoneNumber + " " + password;
+    }
+
+    public boolean equals(Object o){
+        if (!(o instanceof User))
+            return false;
+        else
+            return (this == o);
     }
 }

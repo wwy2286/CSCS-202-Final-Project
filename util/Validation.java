@@ -2,14 +2,12 @@ package csc202.FinalProject.util;
 
 import csc202.FinalProject.model.User;
 
-import java.util.ArrayList;
-
 /**
  * Created by William Yu on 9/11/2017.
  */
 public class Validation {
 
-    static public boolean isUsernameUnique(ArrayList<User> users, String username){
+    static public boolean isUsernameUnique(MyArrayList<User> users, String username){
         boolean unique = true;
         for (User db: users){
             if (db.getUsername().equals(username)){
@@ -18,6 +16,8 @@ public class Validation {
         }
         return unique;
     }
+
+
 
    static public boolean isPasswordFormatCorrect(String password){
 
@@ -73,11 +73,14 @@ public class Validation {
     static public boolean isEmailFormat(String s) {
         boolean EmailFormat = true;
         boolean isContainAT = false;
-
-        if (!hasDecimal(Character.toString(s.charAt(0)))
-                && !hasLowercase(Character.toString(s.charAt(0)))
-                && !hasUppercase(Character.toString(s.charAt(0)))) {
-            EmailFormat = false;
+        if (s.isEmpty()){
+            EmailFormat=false;
+        } else {
+            if (!hasDecimal(Character.toString(s.charAt(0)))
+                    && !hasLowercase(Character.toString(s.charAt(0)))
+                    && !hasUppercase(Character.toString(s.charAt(0)))) {
+                EmailFormat = false;
+            }
         }
 
         for (int i = 0; i < s.length(); i++) {
@@ -96,6 +99,16 @@ public class Validation {
             EmailFormat=false;
         }
         return EmailFormat;
+    }
+
+    static public boolean isEmailUnique(MyArrayList<User> users, String email){
+        boolean unique = true;
+        for (User db: users){
+            if (db.getEmail().equals(email)){
+                unique = false;
+            }
+        }
+        return unique;
     }
 
 

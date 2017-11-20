@@ -44,6 +44,16 @@ public class SignUpController {
     Button signUp;
     @FXML
     Label signUpLabel;
+    @FXML
+    Label emailError;
+    @FXML
+    Label usernameError;
+    @FXML
+    Label passwordError;
+    @FXML
+    Label confirmPasswordError;
+
+
 
 
     char gender = 'm';
@@ -53,7 +63,7 @@ public class SignUpController {
     public void displayLogInView(ActionEvent actionEvent) throws Exception {
         Stage primaryStage = (Stage)((Hyperlink)actionEvent.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("../view/LoginJavaFX.fxml"));
-        primaryStage.setTitle("Log In");
+        primaryStage.setTitle("Logged in");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
@@ -63,8 +73,13 @@ public class SignUpController {
         boolean isPasswordFormatCorrect = Validation.isPasswordFormatCorrect(password.getText());
         boolean doesPasswordMatch = password.getText().equals(confirmPassword.getText());
         boolean isEmailFormatCorrect = Validation.isEmailFormat(email.getText());
+        boolean isEmailUnique=Validation.isEmailUnique(UserDB.getUsers(), email.getText());
+        usernameError.setText("");
+        passwordError.setText("");
+        confirmPasswordError.setText("");
+        emailError.setText("");
 
-        if (isUserNameCorrect&&isPasswordFormatCorrect&&doesPasswordMatch&&isEmailFormatCorrect){
+        if (isUserNameCorrect&&isPasswordFormatCorrect&&doesPasswordMatch&&isEmailFormatCorrect&&isEmailUnique){
             User newUser = new User();
             newUser.setFirstName(firstName.getText());
             newUser.setLastName(lastName.getText());
@@ -85,21 +100,27 @@ public class SignUpController {
             }
             signUpLabel.setText("User added");
         } else {
-            Alert output = new Alert(Alert.AlertType.ERROR);
-            String errorOutput ="";
+//            Alert output = new Alert(Alert.AlertType.ERROR);
+//            String errorOutput ="";
             signUpLabel.setText("User not added.");
             if(!isUserNameCorrect)
-                errorOutput += "Username already taken \n";
+                usernameError.setText("Username already taken");
+                //errorOutput += "Username already taken \n";
             if (!isPasswordFormatCorrect)
-                errorOutput += "Password format is incorrect. Please have at least 1 digit, 1 lowercase letter, 1 uppercase letter and 1 special character. \n";
+                passwordError.setText("Password format is incorrect");
+                //errorOutput += "Password format is incorrect. Please have at least 1 digit, 1 lowercase letter, 1 uppercase letter and 1 special character. \n";
             if (!doesPasswordMatch)
-                errorOutput += "Passwords do not match. \n";
+                confirmPasswordError.setText("Passwords do not match");
+                //errorOutput += "Passwords do not match. \n";
             if (!isEmailFormatCorrect)
-                errorOutput += "Email format is not correct. \n";
-            output.setTitle("Error Dialog");
-            output.setHeaderText("User not added");
-            output.setContentText(errorOutput);
-            output.showAndWait();
+                emailError.setText("Email format is incorrect");
+            if (!isEmailUnique)
+                emailError.setText("Email is already signed up");
+                //errorOutput += "Email format is not correct. \n";
+//            output.setTitle("Error Dialog");
+//            output.setHeaderText("User not added");
+//            output.setContentText(errorOutput);
+//            output.showAndWait();
 
         }
 
